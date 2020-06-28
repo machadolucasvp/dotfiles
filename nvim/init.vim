@@ -6,17 +6,24 @@ Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
 Plug 'vim-airline/vim-airline'
-Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'HerringtonDarkholme/yats.vim' 
+Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+" Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'gruvbox-community/gruvbox'
 
 call plug#end()
 
-" General stuff
+" Theme
 colorscheme gruvbox
 set background=dark
+let g:gruvbox_contrast_dark = 'hard'
+
+" General stuff
+set encoding=UTF-8
 set nu
 set incsearch
 set noerrorbells
@@ -65,13 +72,12 @@ map <C-b> :NERDTreeToggle<CR>
 " Find current file in tree
 nmap <leader>n :NERDTreeFind<CR>
 
-let g:nerdtree_tabs_focus_on_files=1
-
 " NERDTree ignored files
 let g:NERDTreeIgnore = ['^node_modules$','^dist$']
 
 " It doesn't have to be that big
 let g:fzf_layout = { 'down': '~20%' }
+
 " toggle FZF 
 nmap <silent> <leader>p :FZF<cr>
 
@@ -90,14 +96,14 @@ nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-"Autocomplete with first suggestion if no item has been selected
+" Autocomplete with first suggestion if no item has been selected
 inoremap <silent><expr> <C-space> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Format selected lines
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
-" Docs
+" Open doc tooltip 
 nnoremap <silent> <C-k> :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
