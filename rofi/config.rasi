@@ -1,0 +1,5 @@
+configuration {
+    modi: "drun,run";
+    theme: "themes/gruvbox-dark-hard.rasi";
+    font: "Hack Nerd Font 12";
+}
