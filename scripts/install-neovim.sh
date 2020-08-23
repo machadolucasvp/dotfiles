@@ -1,4 +1,5 @@
-. $(dirname "$0")/common.sh
+CURRENT_DIR=$(dirname "$0")
+. $CURRENT_DIR/common.sh
 
 WORK_DIR=~/.config/nvim
 mkdir -p $WORK_DIR
@@ -8,5 +9,5 @@ if ! type vim > /dev/null; then
     logger nvim installed
 fi
 
-ln -sf ../nvim/init.vim $WORK_DIR/init.vim && logger nvim configured 
+ln -sf $CURRENT_DIR/../nvim/init.vim $WORK_DIR/init.vim && logger nvim configured 
 

@@ -1,4 +1,5 @@
 log_file=$1
+
 now=$(date) 
 
 logger() {

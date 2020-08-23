@@ -10,7 +10,6 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 mkdir -p $temp_folder
-touch log_file
 
 sh ./scripts/install-neovim.sh $log_file
 
