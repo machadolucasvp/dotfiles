@@ -1,4 +1,4 @@
-. ./common.sh
+. $(dirname "$0")/common.sh
 
 WORK_DIR=~/.config/nvim
 mkdir -p $WORK_DIR
