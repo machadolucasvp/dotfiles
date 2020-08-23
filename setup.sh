@@ -1,14 +1,19 @@
 #!/bin/bash
+temp_folder=scripts/tmp
+log_file=$temp_folder/scripts.log
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as super user"
-  exit
+set -e
+
+if [ "$EUID" -ne 0 ]; then 
+    echo "Please run as super user"
+    exit
 fi
 
-mkdir -p scripts/tmp
+mkdir -p $temp_folder
+touch log_file
 
-sh ./scripts/install-neovim.sh
+sh ./scripts/install-neovim.sh $log_file
 
+cat $log_file
+rm -r $temp_folder
 
-cat scripts/tmp/script.log
-rm -r scripts/tmp

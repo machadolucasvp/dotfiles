@@ -1,6 +1,4 @@
-mkdir -p tmp
-log_file=tmp/script.log
-
+log_file=$1
 now=$(date) 
 
 logger() {
@@ -10,7 +8,4 @@ logger() {
         echo "$now $1 failed to $2" >> $log_file
     fi
 }
-
-
-
 
