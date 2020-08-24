@@ -4,10 +4,8 @@ CURRENT_DIR=$(dirname "$0")
 WORK_DIR=~/.config/nvim
 mkdir -p $WORK_DIR
 
-if ! type vim > /dev/null; then
-    apt install -y neovim
-    logger nvim installed
-fi
+defaultInstall vim neovim
+update-alternatives --config editor
 
 ln -sf $CURRENT_DIR/../nvim/init.vim $WORK_DIR/init.vim && logger nvim configured 
 
