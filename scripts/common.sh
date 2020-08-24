@@ -10,3 +10,12 @@ logger() {
     fi
 }
 
+defaultInstall() {
+    local package_name=${2:-$1}
+
+    if ! type $1 > /dev/null; then
+        apt install -y $package_name
+        logger $package_name installed
+    fi
+}
+
