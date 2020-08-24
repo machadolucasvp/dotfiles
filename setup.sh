@@ -21,5 +21,4 @@ sh ./scripts/install-alacritty.sh $log_file
 sh ./scripts/install-general.sh $log_file
 
 cat $log_file
-rm -r $temp_folder
 
