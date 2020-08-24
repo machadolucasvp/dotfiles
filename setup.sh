@@ -14,6 +14,7 @@ mkdir -p $temp_folder
 sh ./scripts/install-neovim.sh $log_file
 sh ./scripts/install-tmux.sh $log_file
 sh ./scripts/install-rofi.sh $log_file
+sh ./scripts/install-alacritty.sh $log_file
 
 cat $log_file
 rm -r $temp_folder
