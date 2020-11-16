@@ -93,6 +93,10 @@
         "command": "workbench.action.navigateBack"
     },
     {
+        "key": "ctrl+i",
+        "command": "workbench.action.navigateForward"
+    },
+    {
         "key": "ctrl+g ctrl+d",
         "command": "editor.action.goToTypeDefinition"
     },
