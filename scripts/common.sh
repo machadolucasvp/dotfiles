@@ -1,21 +1,32 @@
-log_file=$1
+log_file=$2
 
 now=$(date) 
 
+RED='\e[0;31m'
+GREEN='\e[0;32m'
+
 logger() {
     if command -v $1 > /dev/null; then
-        echo "$now $1 $2 successfully" >> $log_file
+        echo -e "${GREEN}$now $1 $2 successfully" >> $log_file
     else
-        echo "$now $1 failed to $2" >> $log_file
+        echo -e "${RED}$now $1 failed to $2" >> $log_file
     fi
 }
 
 defaultInstall() {
-    local package_name=${2:-$1}
-
-    if ! type $1 > /dev/null; then
-        apt install -y $package_name
-        logger $package_name installed
-    fi
+    	local package_name=$2
+	local command=${3:-$2}
+	if [ $1 == "Arch" ]; then
+       		logger $command install
+		pacman --noconfirm -S $package_name 
+		exit
+	elif [ $1 == "Debian" ]; then
+       		apt install -y $package_name
+        	logger $command install
+		exit
+	else
+		echo "cant found default installer for $1"
+		exit
+	fi
 }
 
