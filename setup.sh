@@ -9,16 +9,45 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
-mkdir -p $temp_folder
+arch_based_boostrap() {
+echo "running arch_based_boostrap"
+}
 
-apt update -y
-apt install -y build-essential
+debian_based_boostrap() {
+echo "running debian_based_boostrap"
 
-sh ./scripts/install-neovim.sh $log_file
-sh ./scripts/install-tmux.sh $log_file
-sh ./scripts/install-rofi.sh $log_file
-sh ./scripts/install-alacritty.sh $log_file
-sh ./scripts/install-general.sh $log_file
+#apt update -y
+#apt install -y build-essential
 
-cat $log_file
+#sh ./scripts/install-neovim.sh $log_file
+#sh ./scripts/install-tmux.sh $log_file
+#sh ./scripts/install-rofi.sh $log_file
+#sh ./scripts/install-alacritty.sh $log_file
+#sh ./scripts/install-general.sh $log_file
+}
+
+# setup menu
+OPTIONS="Arch Debian Quit"
+
+echo "which distro is your OS based ?"
+select opt in $OPTIONS; do
+	if [ "$opt" = "Quit" ]; then
+		exit 
+	elif [ "$opt" = "Arch" ]; then
+		mkdir -p $temp_folder
+		arch_based_boostrap
+		cat $log_file
+
+		exit
+	elif [ "$opt" = "Debian" ]; then
+		mkdir -p $temp_folder
+		debian_based_boostrap
+		cat $log_file
+
+		exit
+	else
+		echo "invalid input"
+		exit 
+	fi
+done
 
