@@ -1,5 +1,5 @@
 configuration {
     modi: "drun,run";
-    theme: "~/.dotfiles/rofi/themes/gruvbox-dark-hard.rasi";
+    theme: "~/dotfiles/rofi/themes/gruvbox-dark-hard.rasi";
     font: "Hack Nerd Font 12";
 }
