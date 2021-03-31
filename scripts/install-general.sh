@@ -1,16 +1,27 @@
+#!/bin/bash
+USER_HOME=$1
+BASED_DISTRO=$2
 CURRENT_DIR=$(dirname "$0")
 . $CURRENT_DIR/common.sh
 
-apt install -y fonts-hack-ttf && logger hackFont installed
 
-apt install -y zsh && logger zsh installed
-sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && logger oh-my-zsh installed
+defaultInstall $BASED_DISTRO brave
+defaultInstall $BASED_DISTRO vscode code
 
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash && logger nvm installed
+defaultInstall $BASED_DISTRO zsh
+chsh -s $(which zsh)
+ln -f $CURRENT_DIR/../.zshrc $USER_HOME
 
-curl -s https://get.sdkman.io | bash && logger sdkman installed
-source "$HOME/.sdkman/bin/sdkman-init.sh"
+echo "installing oh-my-zsh"
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-sdk install java && logger java8 installed
+echo "installing zsh plugins"
+ZSH_DIR=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+mkdir -p $ZSH_DIR
+echo "trying to create $ZSH_DIR"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_DIR 
+echo "source ${ZSH_DIR}/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
 
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 
