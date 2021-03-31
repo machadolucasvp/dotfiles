@@ -1,9 +1,11 @@
+USER_HOME=$1
+BASED_DISTRO=$2
 CURRENT_DIR=$(dirname "$0")
 . $CURRENT_DIR/common.sh
 
-WORK_DIR=~/.config/rofi
+WORK_DIR=$USER_HOME/.config/rofi
 mkdir -p $WORK_DIR
 
-defaultInstall rofi
+defaultInstall $BASED_DISTRO rofi
 
-ln -sf $CURRENT_DIR/../rofi/config.rasi $WORK_DIR/config.rasi && logger rofi configured
+ln -f $CURRENT_DIR/../rofi/config.rasi $WORK_DIR/config.rasi && logger "rofi configured"

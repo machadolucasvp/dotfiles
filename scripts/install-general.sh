@@ -16,10 +16,11 @@ echo "installing oh-my-zsh"
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 echo "installing zsh plugins"
-local ZSH_DIR=USER_HOME/.plugins
-mkdir $ZSH_DIR
+ZSH_DIR=$USER_HOME/.zsh-plugins
+mkdir -p $ZSH_DIR
+echo "trying to create $ZSH_DIR"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_DIR
-echo "source ${ZSH_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+echo "source ${ZSH_DIR}/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
 
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install

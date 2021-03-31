@@ -1,7 +1,7 @@
 #!/bin/bash
-user_home=$1
-temp_folder=scripts/tmp
-log_file=$temp_folder/scripts.log
+USER_HOME==$1
+TEMP_FOLDER=scripts/tmp
+LOG_FILE=$TEMP_FOLDER/scripts.log
 
 set -e
 
@@ -12,8 +12,11 @@ echo "updating system"
 sudo pacman --noconfirm -Syyu
 
 echo "running scripts"
-sh ./scripts/install-general.sh $user_home Arch $log_file 
-sh ./scripts/install-neovim.sh $user_home Arch $log_file 
+sh ./scripts/install-general.sh $USER_HOME Arch $LOG_FILE 
+sh ./scripts/install-neovim.sh $USER_HOME Arch $LOG_FILE
+sh ./scripts/install-alacritty.sh $USER_HOME Arch $LOG_FILE
+sh ./scripts/install-rofi.sh $USER_HOME Arch $LOG_FILE
+sh ./scripts/install-tmux.sh $USER_HOME Arch $LOG_FILE
 }
 
 debian_based_boostrap() {
@@ -37,17 +40,17 @@ select opt in $OPTIONS; do
 	if [ "$opt" = "Quit" ]; then
 		exit 
 	elif [ "$opt" = "Arch" ]; then
-		mkdir -p $temp_folder
+		mkdir -p $TEMP_FOLDER
 		arch_based_boostrap
-		cat $log_file
-		rm -r $temp_folder
+		cat $LOG_FILE
+		rm -r $TEMP_FOLDER
 
 		exit
 	elif [ "$opt" = "Debian" ]; then
-		mkdir -p $temp_folder
+		mkdir -p $TEMP_FOLDER
 		debian_based_boostrap
-		cat $log_file
-		rm -r $temp_folder
+		cat $LOG_FILE
+		rm -r $TEMP_FOLDER
 
 		exit
 	else
