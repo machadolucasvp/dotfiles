@@ -5,7 +5,7 @@
 set $mod Mod4
 
 # set terminal
-terminal=alacritty
+set $terminal alacritty
 
 # set default desktop layout (default is tiling)
 # workspace_layout tabbed <stacking|tabbed>
