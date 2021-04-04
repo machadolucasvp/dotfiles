@@ -11,9 +11,10 @@
 > I am not responsible for any damages caused by the use of the configurations presented here
 
 ## Screenshots
-![2021-04-04-021434_1920x1080_scrot](https://user-images.githubusercontent.com/44952113/113499928-5c81bb80-94f0-11eb-8b3f-12fa83e82694.png)
-![2021-04-04-022051_1920x1080_scrot](https://user-images.githubusercontent.com/44952113/113499932-61df0600-94f0-11eb-8f55-5232ab4d329c.png)
-![2021-04-04-023247_1920x1080_scrot](https://user-images.githubusercontent.com/44952113/113499934-64416000-94f0-11eb-8839-0bee59396836.png)
+![2021-04-04-114610_1920x1080_scrot](https://user-images.githubusercontent.com/44952113/113512524-6977cc80-953b-11eb-9978-13ea708d2d34.png)
+![2021-04-04-114800_1920x1080_scrot](https://user-images.githubusercontent.com/44952113/113512580-afcd2b80-953b-11eb-8bd3-6113291a84be.png)
+![2021-04-04-120336_1920x1080_scrot](https://user-images.githubusercontent.com/44952113/113513014-dab87f00-953d-11eb-8154-89efe8af1255.png)
+![2021-04-04-115100_1920x1080_scrot](https://user-images.githubusercontent.com/44952113/113512695-2f5afa80-953c-11eb-8b6b-56bb02b1c8d5.png)
 
 ## License
 The MIT License (MIT)

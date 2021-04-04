@@ -3,7 +3,7 @@ conky.config = {
 	background = true,
 	color2 = 'fbf1c7',
 	cpu_avg_samples = 2,
-	default_color = 'fe8019',
+	default_color = 'd65d0e',
 	double_buffer = true,
 	font = 'Hack Nerd Font:size=8',
 	draw_shades = false,
