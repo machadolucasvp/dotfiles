@@ -18,6 +18,11 @@ echo "linking i3 configs"
 mkdir -p ~/.i3
 ln -f $CURRENT_DIR/../i3/config ~/.i3/config
 
+echo "linking conky configs"
+sudo ln -f $CURRENT_DIR/../conky/conky_gruvbox /usr/share/conky/
+sudo ln -f $CURRENT_DIR/../conky/conky1.10_shortcuts_gruvbox /usr/share/conky/
+sudo ln -f $CURRENT_DIR/../conky/start_conky_gruvbox /bin/
+
 sh ./scripts/install-neovim.sh $USER_HOME Arch $LOG_FILE
 sh ./scripts/install-alacritty.sh $USER_HOME Arch $LOG_FILE
 sh ./scripts/install-rofi.sh $USER_HOME Arch $LOG_FILE

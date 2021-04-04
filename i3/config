@@ -284,7 +284,7 @@ exec --no-startup-id pamac-tray
 exec --no-startup-id clipit
 # exec --no-startup-id blueman-applet
 # exec_always --no-startup-id sbxkb
-exec --no-startup-id start_conky_maia
+exec --no-startup-id start_conky_gruvbox
 # exec --no-startup-id start_conky_green
 exec --no-startup-id xautolock -time 10 -locker blurlock
 exec_always --no-startup-id ff-theme-util
@@ -325,7 +325,7 @@ set_from_resource $term_color15    color15
 bar {
 	i3bar_command i3bar
 	status_command i3status
-	position bottom
+	position top
 
 ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
 #	tray_output primary
@@ -337,16 +337,16 @@ bar {
 	strip_workspace_numbers yes
 
     colors {
-        background #222D31
-        statusline #F9FAF9
-        separator  #454947
+        background #1d2021
+        statusline #fbf1c7
+        separator  #3c3836
 
 #                      border  backgr. text
-        focused_workspace  #F9FAF9 #16a085 #292F34
-        active_workspace   #595B5B #353836 #FDF6E3
-        inactive_workspace #595B5B #222D31 #EEE8D5
-        binding_mode       #16a085 #2C2C2C #F9FAF9
-        urgent_workspace   #16a085 #FDF6E3 #E5201D
+        focused_workspace  #665c54 #fe8019 #fbf1c7
+        active_workspace   #665c54 #fe8019 #fbf1c7
+        inactive_workspace #665c54 #3c3836 #fbf1c7
+        binding_mode       #16a085 #d3869b #fbf1c7
+        urgent_workspace   #665c54 #fb4934 #fbf1c7
     }
 }
 
@@ -355,13 +355,13 @@ bindsym $mod+m bar mode toggle
 
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
-  client.focused          #556064 #556064 #80FFF9 #FDF6E3
-  client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
-  client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
-  client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
-  client.placeholder      #000000 #0c0c0c #ffffff #000000 
+  client.focused          #665c54 #504945 #fbf1c7 #fe8019
+  client.focused_inactive #504945 #282828 #fbf1c7 #454948
+  client.unfocused        #504945 #282828 #fbf1c7 #454948
+  client.urgent           #504945 #282828 #fbf1c7 #268BD2
+  client.placeholder      #504945 #282828 #fbf1c7 #000000 
 
-  client.background       #2B2C2B
+  client.background       #1d2021
 
 #############################
 ### settings for i3-gaps: ###

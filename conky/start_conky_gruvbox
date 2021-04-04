@@ -1,0 +1,6 @@
+#!/bin/bash
+
+conky -c /usr/share/conky/conky1.10_shortcuts_gruvbox &&
+conky -c /usr/share/conky/conky_gruvbox &&
+
+exit 0
