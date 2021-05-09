@@ -419,3 +419,11 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
+
+# Startup
+
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id xrandr --auto
+
+# My external monitor config
+exec --no-startup-id xrandr --output HDMI-1-1 --primary --auto --right-of eDP-1
