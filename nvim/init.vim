@@ -1,30 +1,30 @@
 call plug#begin()
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'preservim/nerdtree'
-Plug 'preservim/nerdcommenter'
-Plug 'vim-airline/vim-airline'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'sheerun/vim-polyglot'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
-" Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'gruvbox-community/gruvbox'
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " Language server support
+Plug 'preservim/nerdtree' " System explorer
+Plug 'preservim/nerdcommenter' " Quick comments
+Plug 'vim-airline/vim-airline' " Status bar
+Plug 'airblade/vim-gitgutter' " Git changes in sign column
+Plug 'sheerun/vim-polyglot' " Multiple languages syntax highlight 
+Plug 'Xuyuanp/nerdtree-git-plugin' " Git changes in nerd tree
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " Syntax to nerd tree (requires vim-devicons)
+Plug 'ryanoasis/vim-devicons' " Icons (requires a nerd font)
+Plug 'gruvbox-community/gruvbox' " Theme :)
+Plug 'APZelos/blamer.nvim' " Git blamer
+Plug 'jiangmiao/auto-pairs' "Autocomplete pairs
+Plug 'nvim-lua/plenary.nvim' " Telescope dependency
+Plug 'nvim-telescope/telescope.nvim' " Search engine (requires ripgrep)
+Plug 'tpope/vim-obsession' " Persist sessions, working well with tmux-ressurect
+Plug 'eslint/eslint' " JS/TS Linter
+Plug 'christoomey/vim-tmux-navigator' " Unify movements between tmux and vim
+Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' } " Prettier format
 
 call plug#end()
 
-" Theme
-colorscheme gruvbox
-set background=dark
-let g:gruvbox_contrast_dark = 'hard'
-
-" General stuff
+"--- General ---
 set encoding=UTF-8
 set nu
+set relativenumber
 set incsearch
 set noerrorbells
 set smartindent
@@ -32,56 +32,127 @@ set undodir=~/.nvim/undodir
 set undofile
 set noswapfile
 set nobackup
+set hidden
+set guicursor=
 
 set nowrap
-set expandtab
+set smartindent
+set scrolloff=8
+set signcolumn=yes
 set tabstop=4
-set softtabstop=0
+set softtabstop=4
 set shiftwidth=4
+set expandtab
+set timeoutlen=500
+set ttimeoutlen=200
+set termguicolors
 
 let mapleader = "," 
+
+" Theme
+colorscheme gruvbox
+set background=dark
+let g:gruvbox_contrast_dark = 'hard'
+
+" Highlight cursor line
+set cursorline
+
+" Reload config
+nnoremap <silent> <Leader>rs :source $MYVIMRC<cr>
 
 " Remap esc
 inoremap jk <esc>
 inoremap kj <esc>
+cnoremap jk <C-c>
+cnoremap kj <C-c>
 
-" Move between windows in a more natural way
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
+" Integrate movements between vim panels and tmux windows
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 
 " Save
 nmap <leader>, :w!<cr>
+nmap <leader>,a :wa!<cr>
 
 " Quit
 nmap <leader>q :q!<cr>
-
-" Guess what?
 nmap <leader>wq :wq!<cr>
+
+" Close current buffer (doesn't quit vim if has only one window remaining)
+map <leader>w :bd<cr>
+
+" Clear search highlight
+nnoremap <Leader>fc :noh<cr>
 
 " https://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 
-" Close nerdtree if NERDTree is the last one in buffer
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" toggle NERDTree
-map <C-b> :NERDTreeToggle<CR>
+" Resize window
+nnoremap <silent> <C-r>j  :resize +5<CR>
+nnoremap <silent> <C-r>k :resize -5<CR>
+nnoremap <silent> <C-r>l :vert resize +5<CR>
+nnoremap <silent> <C-r>h :vert resize -5<CR>
 
-" Find current file in tree
-nmap <leader>n :NERDTreeFind<CR>
+"--- Git Blamer ---
+" Enable gitblamer by default
+let g:blamer_enabled = 1
+" Disable gitblamer in visual mode
+let g:blamer_show_in_visual_modes = 0
+
+"--- NERDTree ----
+" Toggle NERDTree
+map <C-b> :call NerdTreeToggle()<CR>
+
+" Find the current file in NERDTree
+map <leader>nf :NERDTreeFind<CR>
+
+" If NERDTree do not exists, open NERDTree in the current file
+function NerdTreeToggle()
+    if &filetype == 'nerdtree' || exists("g:NERDTree") && g:NERDTree.IsOpen()
+        :NERDTreeToggle
+    else
+        :NERDTreeFind
+    endif
+endfunction
 
 " NERDTree ignored files
 let g:NERDTreeIgnore = ['^node_modules$','^dist$']
 
-" It doesn't have to be that big
-let g:fzf_layout = { 'down': '~20%' }
+" Increase NERDTree default size
+let g:NERDTreeWinSize=50
 
-" toggle FZF 
-nmap <silent> <leader>p :FZF<cr>
+" Remap horizontal/vertical open file 
+let NERDTreeMapOpenSplit="<C-s>"
+let NERDTreeMapOpenVSplit="<C-v>"
 
-" Coc type/definition related
+" --- Telescope Fuzzy Finder --
+nnoremap <leader>p <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+
+" Telescope lua configurations
+lua << EOF
+require('telescope').setup{ 
+    defaults = { 
+        mappings = {      
+            i = { 
+                ["<C-s>"] = "select_horizontal"
+            },
+            n = { 
+                ["<C-s>"] = "select_horizontal"
+            }
+        },
+    file_ignore_patterns = {"node_modules", "dist"} 
+    }
+}
+EOF
+
+"--- Conquer of Completion ---
+" Type/definition related
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -94,7 +165,11 @@ nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
 
 " Navigate autocomplete suggestions 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" The <C-d> result here is specific, <S-tab> in insertmode conflicts with 
+" a remap for remove a tab space. So, in order to make it works, a simple
+" solution was to put the remap for remove tab space here, since it happens
+" in case pumvisible is false
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-d>"
 
 " Autocomplete with first suggestion if no item has been selected
 inoremap <silent><expr> <C-space> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
@@ -104,7 +179,7 @@ xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 " Open doc tooltip 
-nnoremap <silent> <C-k> :call <SID>show_documentation()<CR>
+nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -112,3 +187,19 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+"--- Prettier ---
+" Disable autoformat
+let g:prettier#autoformat = 0
+let g:prettier#autoformat_require_pragma = 0
+
+"--- Terminal ---
+" Exit insertmode
+tnoremap jk <C-\><C-n>
+tnoremap kj <C-\><C-n>
+
+" Open terminal
+nnoremap <leader>tt :ter<CR>
+nnoremap <leader>ts :split \| ter<CR>
+nnoremap <leader>tv :vsplit \| ter<CR>
+
