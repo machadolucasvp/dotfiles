@@ -18,6 +18,8 @@ Plug 'tpope/vim-obsession' " Persist sessions, working well with tmux-ressurect
 Plug 'eslint/eslint' " JS/TS Linter
 Plug 'christoomey/vim-tmux-navigator' " Unify movements between tmux and vim
 Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' } " Prettier format
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " Better syntax highlight
+Plug 'vim-test/vim-test' " Tests
 
 call plug#end()
 
@@ -47,6 +49,9 @@ set timeoutlen=500
 set ttimeoutlen=200
 set termguicolors
 
+set splitright " Default vertical split to the right
+set splitbelow " Default horizontal split to below
+
 let mapleader = "," 
 
 " Theme
@@ -58,7 +63,7 @@ let g:gruvbox_contrast_dark = 'hard'
 set cursorline
 
 " Reload config
-nnoremap <silent> <Leader>rs :source $MYVIMRC<cr>
+nnoremap <silent> <Leader>ls :source $MYVIMRC<cr>
 
 " Remap esc
 inoremap jk <esc>
@@ -171,8 +176,8 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 " in case pumvisible is false
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-d>"
 
-" Autocomplete with first suggestion if no item has been selected
-inoremap <silent><expr> <C-space> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" Autocomplete with <CR>
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Format selected lines
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -187,6 +192,10 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+"--- TSSERVER --- 
+" autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+" autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 "--- Prettier ---
 " Disable autoformat
@@ -203,3 +212,28 @@ nnoremap <leader>tt :ter<CR>
 nnoremap <leader>ts :split \| ter<CR>
 nnoremap <leader>tv :vsplit \| ter<CR>
 
+"--- Treesitter ---
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = "maintained",
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+"--- Debugger ---
+" TO DO
+
+"--- Jest ---
+nmap <silent> <leader>rt :TestNearest<CR>
+nmap <silent> <leader>rT :TestFile<CR>
+nmap <silent> <leader>rs :TestSuite<CR>
+nmap <silent> <leader>rl :TestLast<CR>
+nmap <silent> <leader>gT :TestVisit<CR>
