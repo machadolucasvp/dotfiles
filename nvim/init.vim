@@ -5,7 +5,6 @@ Plug 'preservim/nerdtree' " System explorer
 Plug 'preservim/nerdcommenter' " Quick comments
 Plug 'vim-airline/vim-airline' " Status bar
 Plug 'airblade/vim-gitgutter' " Git changes in sign column
-Plug 'sheerun/vim-polyglot' " Multiple languages syntax highlight 
 Plug 'Xuyuanp/nerdtree-git-plugin' " Git changes in nerd tree
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " Syntax to nerd tree (requires vim-devicons)
 Plug 'ryanoasis/vim-devicons' " Icons (requires a nerd font)
@@ -15,11 +14,13 @@ Plug 'jiangmiao/auto-pairs' "Autocomplete pairs
 Plug 'nvim-lua/plenary.nvim' " Telescope dependency
 Plug 'nvim-telescope/telescope.nvim' " Search engine (requires ripgrep)
 Plug 'tpope/vim-obsession' " Persist sessions, working well with tmux-ressurect
-Plug 'eslint/eslint' " JS/TS Linter
+Plug 'tpope/vim-fugitive' " Git integration
 Plug 'christoomey/vim-tmux-navigator' " Unify movements between tmux and vim
 Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' } " Prettier format
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " Better syntax highlight
 Plug 'vim-test/vim-test' " Tests
+Plug 'puremourning/vimspector' " Debugger
+Plug 'szw/vim-maximizer' " Maximize windows easily
 
 call plug#end()
 
@@ -41,6 +42,7 @@ set nowrap
 set smartindent
 set scrolloff=8
 set signcolumn=yes
+set signcolumn=auto:2
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -56,7 +58,7 @@ let mapleader = ","
 
 " Theme
 colorscheme gruvbox
-set background=dark
+"set background=dark
 let g:gruvbox_contrast_dark = 'hard'
 
 " Highlight cursor line
@@ -145,10 +147,12 @@ require('telescope').setup{
     defaults = { 
         mappings = {      
             i = { 
-                ["<C-s>"] = "select_horizontal"
+                ["<C-s>"] = "select_horizontal",
+                ["<c-d>"] = "delete_buffer",
             },
             n = { 
-                ["<C-s>"] = "select_horizontal"
+                ["<C-s>"] = "select_horizontal",
+                ["<c-d>"] = "delete_buffer",
             }
         },
     file_ignore_patterns = {"node_modules", "dist"} 
@@ -168,6 +172,9 @@ nmap <leader>g] <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>gp <Plug>(coc-diagnostic-prev-error)
 nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
 
+" Renaming
+nmap <leader>rn <Plug>(coc-rename)
+
 " Navigate autocomplete suggestions 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 " The <C-d> result here is specific, <S-tab> in insertmode conflicts with 
@@ -182,6 +189,7 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Format selected lines
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>fl <Plug>(coc-format-file)
 
 " Open doc tooltip 
 nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
@@ -199,6 +207,7 @@ endfunction
 
 "--- Prettier ---
 " Disable autoformat
+nmap <Leader>fa <Plug>(Prettier)
 let g:prettier#autoformat = 0
 let g:prettier#autoformat_require_pragma = 0
 
@@ -229,11 +238,62 @@ require'nvim-treesitter.configs'.setup {
 EOF
 
 "--- Debugger ---
-" TO DO
+" let g:vimspector_enable_mappings = 'HUMAN'
+" let g:vimspector_base_dir=expand( '$HOME/.config/vimspector-config' )
+let g:vimspector_sign_priority = {
+  \    'vimspectorBP':         999,
+  \    'vimspectorBPCond':     999,
+  \    'vimspectorBPLog':      999,
+  \    'vimspectorBPDisabled': 999,
+  \    'vimspectorPC':         999,
+  \ }
 
-"--- Jest ---
+nnoremap <leader>m :MaximizerToggle!<CR>
+
+nnoremap <leader>dd :call vimspector#Launch()<CR>
+nnoremap <leader>ddc :call vimspector#RunToCursor()<CR>
+nnoremap <leader>dr :call vimspector#Restart()<CR>
+nnoremap <leader>de :call vimspector#Reset()<CR>
+
+
+nnoremap <leader>dj :call vimspector#StepInto()<CR>
+nnoremap <leader>dl :call vimspector#StepOver()<CR>
+nnoremap <leader>dk :call vimspector#StepOut()<CR>
+nnoremap <leader>d<space> :call vimspector#Continue()<CR>
+
+nmap <leader>dbr :call vimspector#ClearBreakpoints()<CR>
+nmap <leader>db <Plug>VimspectorToggleBreakpoint
+nmap <leader>dcb <Plug>VimspectorToggleConditionalBreakpoint
+
+nnoremap <leader>dw :call AddToWatch()<CR>
+nmap <leader>dh <Plug>VimspectorBalloonEval
+
+func! AddToWatch()
+    let word = expand("<cexpr>")
+    call vimspector#AddWatch(word)
+endfunction
+
+" Running tests with vimspector 
+function! JestStrategy(cmd)
+  let testName = matchlist(a:cmd, '\v -t ''(.*)''')[1]
+  call vimspector#LaunchWithSettings( #{ configuration: 'jest', TestName: testName } )
+endfunction
+
+let g:test#custom_strategies = {'jest': function('JestStrategy')}
+
+
+"--- Tests ---
 nmap <silent> <leader>rt :TestNearest<CR>
+nmap <silent> <leader>rd :TestNearest -strategy=jest<CR>
 nmap <silent> <leader>rT :TestFile<CR>
 nmap <silent> <leader>rs :TestSuite<CR>
 nmap <silent> <leader>rl :TestLast<CR>
 nmap <silent> <leader>gT :TestVisit<CR>
+
+"--- NerdCommenter --
+" Add spaces after comment delimiters 
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
