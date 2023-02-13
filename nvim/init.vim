@@ -37,6 +37,10 @@ set noswapfile
 set nobackup
 set hidden
 set guicursor=
+set guifont=Hack\ Nerd\ Font
+
+" Share same clipboard of the system
+set clipboard=unnamedplus
 
 set nowrap
 set smartindent
@@ -172,6 +176,13 @@ nmap <leader>g] <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>gp <Plug>(coc-diagnostic-prev-error)
 nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
 
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" Autocomplete with <CR>
+" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
 " Renaming
 nmap <leader>rn <Plug>(coc-rename)
 
@@ -182,9 +193,6 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 " solution was to put the remap for remove tab space here, since it happens
 " in case pumvisible is false
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-d>"
-
-" Autocomplete with <CR>
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Format selected lines
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -225,7 +233,7 @@ nnoremap <leader>tv :vsplit \| ter<CR>
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
+  ensure_installed = "all",
   highlight = {
     enable = true,
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
