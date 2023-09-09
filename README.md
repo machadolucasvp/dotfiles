@@ -4,11 +4,9 @@
   </a>
 
   <p align="center">
-    These are my personal dotfiles, feel free to enjoy :smile:
+    These are my personal dotfiles. Feel free to enjoy!:smile:
   </p>
 </p>
-
-> I am not responsible for any damages caused by the use of the configurations presented here
 
 ## Screenshots
 ![2021-04-04-114610_1920x1080_scrot](https://user-images.githubusercontent.com/44952113/113512524-6977cc80-953b-11eb-9978-13ea708d2d34.png)
